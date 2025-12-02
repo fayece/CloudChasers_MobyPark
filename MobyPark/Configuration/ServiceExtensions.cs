@@ -87,9 +87,23 @@ public static class ServiceExtensions
 
         services.AddAuthorizationBuilder().AddPolicy("CanManageHotelPasses",
             policy => { policy.RequireClaim("Permission", "HOTELPASSES:MANAGE"); });
-        
+
         services.AddMobyParkServices(configuration);
         services.AddSwaggerAuthorization();
+
+        services.AddHttpsRedirection(options =>
+        {
+            if (configuration.GetValue<string>("ASPNETCORE_ENVIRONMENT") == "Development")
+            {
+                options.RedirectStatusCode = StatusCodes.Status307TemporaryRedirect;
+                options.HttpsPort = 5001;
+            }
+            else
+            {
+                options.RedirectStatusCode = StatusCodes.Status308PermanentRedirect;
+                options.HttpsPort = 443;
+            }
+        });
 
         return services;
     }
