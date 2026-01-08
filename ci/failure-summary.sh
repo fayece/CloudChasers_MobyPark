@@ -1,8 +1,4 @@
-#!/usr/bin/env bash
 set -e
-
-echo "==================== CI FAILURE SUMMARY ====================" >> "$GITHUB_STEP_SUMMARY"
-echo "" >> "$GITHUB_STEP_SUMMARY"
 
 reason=""
 fix=""
@@ -19,6 +15,8 @@ elif [[ "$GITHUB_STEP_TEST_OUTCOME" == "failure" ]]; then
 fi
 
 if [[ -n "$reason" ]]; then
+  echo "### CI Failure" >> "$GITHUB_STEP_SUMMARY"
+  echo "" >> "$GITHUB_STEP_SUMMARY"
   echo "**Reason:** $reason" >> "$GITHUB_STEP_SUMMARY"
   echo "**Fix:** $fix" >> "$GITHUB_STEP_SUMMARY"
 fi
